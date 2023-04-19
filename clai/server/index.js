@@ -1,5 +1,5 @@
 import express from 'express';
-import * as dotenv from 'dotenv'; // see https://github.com/motdotla/dotenv#how-do-i-use-dotenv-with-import
+import * as dotenv from 'dotenv';
 dotenv.config();
 import cors from 'cors';
 import files from './files.js';
@@ -32,14 +32,18 @@ app.post('/api/prompt', (req, res) => {
   api.sendPrompt(req.body)
     .then(response => {
       console.log('objdata:\n', response.data);
-      return files.writeObj('newObject', response.data.choices[0].text)
+      if(response.data === undefined) {
+        return response;
+      } else {
+        return files.writeObj('newObject', response.data.choices[0].text);
+      }
     })
     .then(result =>  res.status(201).send(result))
     .catch(err => {
-      console.log('api or fileWrite error', err);
-      res.status(500).send(err)
+      console.log('api or fileWrite error', err, '\n\n', );
+      res.status(500).send(err);
     })
-
+    console.log('--done serving prompt request--');
 });
 
 console.log('listening on port:', PORT);

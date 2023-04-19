@@ -6,10 +6,9 @@ import Scene from './Scene.jsx';
 const cubePath = '/obj/cube.obj'
 const sharkPath = '/obj/shark.obj'
 const betterSharkPath = '/obj/bettershark.obj'
-const topHat = '/obj/babysfirsttophat.obj'
 const newObj = '/obj/newObject.obj'
 
-const defaultModels = [cubePath, sharkPath, betterSharkPath, topHat, newObj]
+const defaultModels = [cubePath, sharkPath, betterSharkPath, newObj]
 
 function App() {
   const [models, setModels] = useState(defaultModels)
@@ -19,21 +18,24 @@ function App() {
     setPrompt(event.target.value);
   }
   function handleSubmit(event) {
-    alert('A prompt was submitted: ' + prompt);
-    const options = {
-      method: 'POST',
-      body: prompt
+    if (confirm('Send to AI:\n' + prompt)) {
+      const options = {
+        method: 'POST',
+        body: prompt
+      }
+      fetch('/api/prompt', options)
+        .then(res => {
+          console.log(res)
+        })
+        .catch(err => console.log('axerror: ', err))
+    } else {
+      event.preventDefault();
     }
-    fetch('/api/prompt', options)
-      .then(res => {
-        console.log(res)
-      })
-      .catch(err => console.log('axerror: ', err))
-    event.preventDefault();
   }
   return (
     <div className="App">
       <h1>/CL//AI/</h1>
+      <button><a href={model}>{`download ${model}`}</a></button>
       <Scene model={model} />
       <div className='carosel' style={{display: 'flex', flexDirection: 'row'}}>
         {models.map((modelPath, index) => (

@@ -1,12 +1,12 @@
 import { Configuration, OpenAIApi } from "openai";
-import * as dotenv from 'dotenv'; // see https://github.com/motdotla/dotenv#how-do-i-use-dotenv-with-import
+import * as dotenv from 'dotenv';
 dotenv.config();
 
 //SAFETY FIRST - expensive API
 //change to true when want to use openAI
 const apiIsLive =
-false;
-// true;
+// false;
+true;
 
 const models = {
   davinci3: 'text-davinci-003',
@@ -15,14 +15,16 @@ const models = {
   babbage1: 'text-babbage-001',
   ada1: 'text-ada-001'
 }
+
 const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
 });
+
 const openai = new OpenAIApi(configuration);
 
 const sendPrompt = async function (prompt='') {
   if (prompt === '' || apiIsLive === false) {
-    console.log('empty prompt or safeguard is still set to FALSE', process.env.OPENAI_API_KEY)
+    console.log('empty prompt or safeguard is still set to FALSE');
     return '#PLACEHOLDERTEXT';
   } else {
     const response = await openai.createCompletion({
