@@ -1,0 +1,20 @@
+
+# Moon Bun
+
+mtllib moon_bun.mtl
+
+# Start of Vertex List
+
+v -0.5 0.02 0
+v 0.5 0.02 0
+v -0.5 -0.02 0
+v 0.5 -0.02 0
+v 0 0.01 1
+v 0 -0.01 1
+
+# Start of Face List
+
+f 1 2 5
+f 2 3 5
+f 3 4 5
+f 1 5 4

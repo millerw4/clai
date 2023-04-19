@@ -9,9 +9,12 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@react-three/drei": "^9.65.3",
     "@react-three/fiber": "^8.12.1",
     "@types/three": "^0.150.1",
+    "dotenv": "^16.0.3",
     "express": "^4.18.2",
+    "openai": "^3.2.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "three": "^0.151.3"
