@@ -5,8 +5,8 @@ dotenv.config();
 //SAFETY FIRST - expensive API
 //change to true when want to use openAI
 const apiIsLive =
-// false;
-true;
+false;
+// true;
 
 const models = {
   davinci3: 'text-davinci-003',
@@ -29,8 +29,8 @@ const sendPrompt = async function (prompt='') {
   } else {
     const response = await openai.createCompletion({
       model: models.davinci3,
-      prompt: `This is the .obj file for a low-poly 3D model of a ${prompt}:\n`,
-      temperature: 1,
+      prompt: `This is the .obj file for a low-poly 3D model of a ${prompt}:\n\n`,
+      temperature: 0,
       max_tokens: 1000,
       top_p: 1,
       frequency_penalty: 0,

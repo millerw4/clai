@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import './App.css'
 import Scene from './Scene.jsx';
@@ -10,10 +10,23 @@ const newObj = '/obj/newObject.obj'
 
 const defaultModels = [cubePath, sharkPath, betterSharkPath, newObj]
 
+async function getModels() {
+  const response = await fetch('/api/object', {method: 'GET'});
+  let models = await response.json();
+  models = models.map(model => '/obj/' + model);
+  console.log(models);
+  return models;
+}
+
 function App() {
   const [models, setModels] = useState(defaultModels)
   const [model, setModel] = useState(cubePath);
   const [prompt, setPrompt] = useState('');
+
+  useEffect(() => {
+    getModels().then(models => setModels(models));
+  }, [])
+
   function handleChange(event) {
     setPrompt(event.target.value);
   }
@@ -24,13 +37,11 @@ function App() {
         body: prompt
       }
       fetch('/api/prompt', options)
-        .then(res => {
-          console.log(res)
-        })
+        .then(() => getModels())
+        .then(models => setModels(models))
         .catch(err => console.log('axerror: ', err))
-    } else {
-      event.preventDefault();
     }
+    event.preventDefault();
   }
   return (
     <div className="App">
@@ -44,7 +55,7 @@ function App() {
       </div>
       <div className='form' >
         <form onSubmit={handleSubmit} style={{display: 'flex', flexDirection: 'column'}} >
-          <textarea value={prompt} onChange={handleChange} placeholder="Describe something..." />
+          <textarea value={prompt} onChange={handleChange} style={{resize: 'vertical'}} placeholder="Describe something..." />
           <input type="submit" value="Sculpt (Send to AI)" />
         </form>
       </div>

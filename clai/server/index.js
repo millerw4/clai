@@ -1,29 +1,26 @@
 import express from 'express';
 import * as dotenv from 'dotenv';
 dotenv.config();
-import cors from 'cors';
+// import cors from 'cors';
+import morgan from 'morgan';
+
 import files from './files.js';
 import api from './api.js';
-
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-//serve static
+//serve static ..?
 
 //mount middleware
-app.use(cors());
+// app.use(cors());
 app.use(express.json());
-app.use(express.text());
-app.use((req, res, next) =>{
-  console.log('serving request:', req.method, req.path, req.body);
-  next();
-});
+app.use(morgan('tiny'));
 
 //routes
 app.get('/api/object', (req, res) => {
   files.readObjFilenames()
-    .then(names =>  res.status(200).send(names))
+    .then(names => res.json(names))
     .catch(err =>  res.status(500).send(err));
 });
 
