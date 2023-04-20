@@ -1,0 +1,5 @@
+
+
+.name "cactus" .ovp .o "file.ovp"
+
+.color "black" . Obj "file.obj"

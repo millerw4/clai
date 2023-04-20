@@ -3,11 +3,11 @@ import axios from 'axios'
 import './App.css'
 import Scene from './Scene.jsx';
 
+//default data - breaks project if not in public folder
 const cubePath = '/obj/cube.obj'
 const sharkPath = '/obj/shark.obj'
 const betterSharkPath = '/obj/bettershark.obj'
 const newObj = '/obj/newObject.obj'
-
 const defaultModels = [cubePath, sharkPath, betterSharkPath, newObj]
 
 async function getModels() {
@@ -39,28 +39,38 @@ function App() {
       fetch('/api/prompt', options)
         .then(() => getModels())
         .then(models => setModels(models))
-        .catch(err => console.log('axerror: ', err))
+        .catch(err => console.log('error: ', err))
     }
     event.preventDefault();
   }
+  const caroStyle = {
+    display: 'flex',
+    flexDirection: 'row',
+    width: '100%',
+    overflow: 'x-auto',
+    flexWrap: 'wrap',
+    justifyContent: 'space-around'
+  };
   return (
     <div className="App">
       <h1>/CL//AI/</h1>
-      <button><a href={model}>{`download ${model}`}</a></button>
       <Scene model={model} />
-      <div className='carosel' style={{display: 'flex', flexDirection: 'row'}}>
-        {models.map((modelPath, index) => (
-          <button key={index} onClick={e => setModel(modelPath)}>{modelPath}</button>
-        ))}
-      </div>
-      <div className='form' >
-        <form onSubmit={handleSubmit} style={{display: 'flex', flexDirection: 'column'}} >
-          <textarea value={prompt} onChange={handleChange} style={{resize: 'vertical'}} placeholder="Describe something..." />
-          <input type="submit" value="Sculpt (Send to AI)" />
-        </form>
+      <button><a href={model}>{`download ${model}`}</a></button>
+      <div style={{width: '500px'}}>
+        <div className='form' >
+          <form onSubmit={handleSubmit} style={{display: 'flex', flexDirection: 'column'}} >
+            <textarea value={prompt} onChange={handleChange} style={{resize: 'vertical'}} placeholder="Describe something..." />
+            <input type="submit" value="Sculpt (Send to AI)" />
+          </form>
+        </div>
+        <div className='carosel' style={caroStyle}>
+          {models.map((modelPath, index) => (
+            <button key={index} onClick={e => setModel(modelPath)}>{modelPath}</button>
+          ))}
+        </div>
       </div>
     </div>
   )
 }
 
-export default App
+export default App;
